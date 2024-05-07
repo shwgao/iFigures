@@ -17,7 +17,7 @@ plt.rc('legend', fontsize=BIGGER_SIZE )    # legend fontsize
 
 font1 = {'color':'black','size':BIG_SIZE, 'weight':'bold'}
 
-colors = ['skyblue','skyblue','orange']
+colors = ['skyblue', 'skyblue', 'orange']
 
 figure_size = (20, 8)
 
