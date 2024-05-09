@@ -500,6 +500,37 @@ def draw_bt_perform():
                      limits=y_limits)
 
 
+
+def draw_ft_perform():
+    datas = read_data('./log_files/motivation.txt')
+    data = datas['FT performance']
+
+    line_data = [x for x in data['PeakMem']]
+    bar_data = [x / 60 for x in data['Exetime']]
+
+    x_ticklabels = data['label']
+    title = 'FT'
+
+    line_label = 'Peak Memory Usage (GB)'
+    bar_label = 'Execution Time (min)'
+    xlabel = ''
+
+    bar_scale = 'linear'
+    line_scale = 'linear'
+
+    bar_color = colors[0]
+    line_color = colors[1]
+
+    file_name = './figures/FT_performance.pdf'
+
+    y_tickles = None
+    y_limits = [[0, 55], [0, 100]]
+
+    draw_double_axis(bar_data, line_data, bar_label, line_label, title, xlabel, x_ticklabels, file_name, bar_color,
+                     line_color, bar_scale, line_scale, fig_size=(13, 8), font_size=BIGGER_SIZE, y_tickles=y_tickles,
+                     limits=y_limits)
+
+
 def draw_double_axis(bar_data, line_data, bar_label, line_label, title, xlabel, x_ticklabels, file_name, bar_color,
                      line_color, bar_scale='linear', line_scale='linear', fig_size=(20, 8), font_size=BIGGER_SIZE,
                      y_tickles=None, limits=None):
@@ -634,4 +665,5 @@ if __name__ == '__main__':
     # draw_cg_perform()
     # draw_NP_1()
     # draw_mg_perform()
-    draw_bt_perform()
+    # draw_bt_perform()
+    draw_ft_perform()

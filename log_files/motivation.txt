@@ -36,3 +36,8 @@ BT performance
 label       Oracle   1%      5%     20%        50%        70%     100%
 PeakMem     11.23    0.1     0.5    2.2        5.6        7.8     11.2
 Exetime     15000    30376   29594  15597      15614      15550   15000
+
+FT performance
+label       Oracle   1%      5%     20%        50%        70%     100%
+PeakMem     83.9     0.8     4.2    16.8       41.9       58.7    83.9
+Exetime     2520     2394    2471   2395       2341       2342    2520
