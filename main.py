@@ -438,6 +438,10 @@ def draw_cg_perform():
                      line_color, bar_scale, line_scale, fig_size=(13, 8), font_size=BIGGER_SIZE, y_tickles=y_tickles)
 
 
+def draw_mg_perform():
+
+
+
 def draw_double_axis(bar_data, line_data, bar_label, line_label, title, xlabel, x_ticklabels, file_name, bar_color,
                      line_color, bar_scale='linear', line_scale='linear', fig_size=(20, 8), font_size=BIGGER_SIZE,
                      y_tickles=None):
