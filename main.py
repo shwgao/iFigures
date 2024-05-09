@@ -433,18 +433,76 @@ def draw_cg_perform():
     file_name = './figures/CG_performance.pdf'
 
     y_tickles = [0, 20, 40, 60, 80, 100, 120, 140, 160, 180, 200, 220]
+    y_limits = [[0, 225], [0, 9.3]]
 
     draw_double_axis(bar_data, line_data, bar_label, line_label, title, xlabel, x_ticklabels, file_name, bar_color,
-                     line_color, bar_scale, line_scale, fig_size=(13, 8), font_size=BIGGER_SIZE, y_tickles=y_tickles)
+                     line_color, bar_scale, line_scale, fig_size=(13, 8), font_size=BIGGER_SIZE, y_tickles=y_tickles,
+                     limits=y_limits)
 
 
 def draw_mg_perform():
+    datas = read_data('./log_files/motivation.txt')
+    data = datas['MG performance']
 
+    line_data = [x for x in data['PeakMem']]
+    bar_data = [x / 60 for x in data['Exetime']]
+
+    x_ticklabels = data['label']
+    title = 'MG'
+
+    line_label = 'Peak Memory Usage (GB)'
+    bar_label = 'Execution Time (min)'
+    xlabel = ''
+
+    bar_scale = 'linear'
+    line_scale = 'linear'
+
+    bar_color = colors[0]
+    line_color = colors[1]
+
+    file_name = './figures/MG_performance.pdf'
+
+    y_tickles = None
+    y_limits = [[0, 28], [0, 30]]
+
+    draw_double_axis(bar_data, line_data, bar_label, line_label, title, xlabel, x_ticklabels, file_name, bar_color,
+                     line_color, bar_scale, line_scale, fig_size=(13, 8), font_size=BIGGER_SIZE, y_tickles=y_tickles,
+                     limits=y_limits)
+
+
+def draw_bt_perform():
+    datas = read_data('./log_files/motivation.txt')
+    data = datas['BT performance']
+
+    line_data = [x for x in data['PeakMem']]
+    bar_data = [x / 60 for x in data['Exetime']]
+
+    x_ticklabels = data['label']
+    title = 'BT'
+
+    line_label = 'Peak Memory Usage (GB)'
+    bar_label = 'Execution Time (min)'
+    xlabel = ''
+
+    bar_scale = 'linear'
+    line_scale = 'linear'
+
+    bar_color = colors[0]
+    line_color = colors[1]
+
+    file_name = './figures/BT_performance.pdf'
+
+    y_tickles = None
+    y_limits = [[0, 600], [0, 13]]
+
+    draw_double_axis(bar_data, line_data, bar_label, line_label, title, xlabel, x_ticklabels, file_name, bar_color,
+                     line_color, bar_scale, line_scale, fig_size=(13, 8), font_size=BIGGER_SIZE, y_tickles=y_tickles,
+                     limits=y_limits)
 
 
 def draw_double_axis(bar_data, line_data, bar_label, line_label, title, xlabel, x_ticklabels, file_name, bar_color,
                      line_color, bar_scale='linear', line_scale='linear', fig_size=(20, 8), font_size=BIGGER_SIZE,
-                     y_tickles=None):
+                     y_tickles=None, limits=None):
     fig, ax = plt.subplots(1, 1, figsize=fig_size)
     ax2 = ax.twinx()
 
@@ -474,10 +532,10 @@ def draw_double_axis(bar_data, line_data, bar_label, line_label, title, xlabel, 
     ax2.set_yscale(line_scale)
 
     # 调整y轴范围
-    ax.set_ylim(0, 225)
-    ax2.set_ylim(0, 9.3)
+    ax.set_ylim(limits[0][0], limits[0][1])
+    ax2.set_ylim(limits[1][0], limits[1][1])
     if y_tickles:
-        ax.set_yticks()
+        ax.set_yticks(y_tickles)
     # ax.autoscale()
     # ax2.autoscale()
 
@@ -574,4 +632,6 @@ if __name__ == '__main__':
     # draw_seq_read()
     # draw_seq_write()
     # draw_cg_perform()
-    draw_NP_1()
+    # draw_NP_1()
+    # draw_mg_perform()
+    draw_bt_perform()
