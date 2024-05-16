@@ -41,3 +41,13 @@ FT performance
 label       Oracle   1%      5%     20%        50%        70%     100%
 PeakMem     83.9     0.8     4.2    16.8       41.9       58.7    83.9
 Exetime     2520     2394    2471   2395       2341       2342    2520
+
+LU performance
+label       Oracle   1%      5%     20%        50%        70%     100%
+PeakMem     9.2     0.1     0.5     1.8        4.6        6.4     9.2
+Exetime     10728   10728   10728   9642      9679      10024   10728
+
+CG Multi-thread performance
+label       1       4       8       16      24
+CG     8706    4675    2671    1125    750
+oracle 8706    2099    1111    573     396

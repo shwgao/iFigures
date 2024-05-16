@@ -8,7 +8,9 @@ MEDIUM_SIZE = 10
 BIG_SIZE = 26
 BIGGER_SIZE = 26
 
-colors = ['#4793AF', '#FFC470', '#DD5746']
+# colors = ['#4793AF', '#FFC470', '#DD5746']
+colors = ['#B6BBC4', '#B31312']
+
 
 
 def read_data(file='./log_files/motivation.txt'):
@@ -500,7 +502,6 @@ def draw_bt_perform():
                      limits=y_limits)
 
 
-
 def draw_ft_perform():
     datas = read_data('./log_files/motivation.txt')
     data = datas['FT performance']
@@ -525,6 +526,36 @@ def draw_ft_perform():
 
     y_tickles = None
     y_limits = [[0, 55], [0, 100]]
+
+    draw_double_axis(bar_data, line_data, bar_label, line_label, title, xlabel, x_ticklabels, file_name, bar_color,
+                     line_color, bar_scale, line_scale, fig_size=(13, 8), font_size=BIGGER_SIZE, y_tickles=y_tickles,
+                     limits=y_limits)
+
+
+def draw_lu_perform():
+    datas = read_data('./log_files/motivation.txt')
+    data = datas['LU performance']
+
+    line_data = [x for x in data['PeakMem']]
+    bar_data = [x / 60 for x in data['Exetime']]
+
+    x_ticklabels = data['label']
+    title = 'LU'
+
+    line_label = 'Peak Memory Usage (GB)'
+    bar_label = 'Execution Time (min)'
+    xlabel = ''
+
+    bar_scale = 'linear'
+    line_scale = 'linear'
+
+    bar_color = colors[0]
+    line_color = colors[1]
+
+    file_name = './figures/LU_performance.pdf'
+
+    y_tickles = None
+    y_limits = [[0, 220], [0, 11]]
 
     draw_double_axis(bar_data, line_data, bar_label, line_label, title, xlabel, x_ticklabels, file_name, bar_color,
                      line_color, bar_scale, line_scale, fig_size=(13, 8), font_size=BIGGER_SIZE, y_tickles=y_tickles,
@@ -601,7 +632,7 @@ def draw_NP_1():
     # draw three bars separately
     for i in range(3):
         fig, ax = plt.subplots(1, 1, figsize=(10, 7))
-        labels = ['Init', '1', '2', '3', '4', '5', 'Do>4KB', 'Do<4KB'] if i == 2 else labels
+        labels = ['Init', '1', '2', '3', '4', '5', 'DO>=4KB', 'DO<4KB'] if i == 2 else labels
 
         ax.bar(labels, data[i], color=colors[i], edgecolor='black')
 
@@ -611,7 +642,7 @@ def draw_NP_1():
         ax.set_xlabel('Iteration', fontsize=BIGGER_SIZE, fontweight='bold')
 
         if i == 0:
-            ax.set_title('Data Object Size <= 4KB', fontsize=BIGGER_SIZE + 3, fontweight='bold')
+            ax.set_title('Data Object Size < 4KB', fontsize=BIGGER_SIZE + 3, fontweight='bold')
             ax.autoscale()
             ax.set_yscale('log')
             ax.set_ylim(0, 4e8)
@@ -657,13 +688,214 @@ def draw_NP_1():
         plt.show()
 
 
+def draw_cg_multithreads():
+    labels = ['1', '4', '8', '16', '24']
+    y_values = [8706, 4675, 2671, 1125, 750]
+    y_values = [x / 60 for x in y_values]
+
+    fig, ax = plt.subplots(1, 1, figsize=(10, 7))
+
+    index = np.arange(len(labels)) * 0.5
+
+    # 绘制柱状图
+    bar_width = 0.3
+    ax.bar(index, y_values, bar_width, color='#B6BBC4', edgecolor='black')
+    ax.set_ylabel('Execution Time (min)', fontsize=BIGGER_SIZE, fontweight='bold')
+    ax.set_xlabel('Number of Threads', fontsize=BIGGER_SIZE, fontweight='bold')
+    ax.set_title('CG Multi-threads Performance', fontsize=BIGGER_SIZE + 3, fontweight='bold')
+
+    ax.set_xticks(index)
+    ax.set_xticklabels(labels, fontsize=BIGGER_SIZE, fontweight='bold')
+
+    # set y ticks' format
+    ax.yaxis.set_tick_params(labelsize=BIG_SIZE)
+    ax.set_ylim(0, 160)
+
+    for i in range(len(labels)):
+        ax.text(index[i], y_values[i], round(y_values[i]), ha='center', va='bottom', fontsize=BIG_SIZE)
+
+    ax.grid(axis='y', linestyle='--', alpha=0.9, zorder=0)
+
+    plt.tight_layout()
+
+    # 保存图片
+    plt.savefig('./figures/CG_multithreads.pdf')
+    # plt.close()
+    plt.show()
+
+
+def draw_cg_or_multithreads():
+    label = ['1', '4', '8', '16', '24']
+    dual = [8706, 4675, 2671, 1125, 750]
+    oracles = [8706, 2099, 1111, 573, 396]
+    n_oracles = [x/60 for x in oracles]
+    n_dual = [x/60 for x in dual]
+    colors = ['#B6BBC4', '#FFC470']
+
+    fig, ax = plt.subplots(1, 1, figsize=(10, 6))
+    bar_width = 0.3
+
+    index = np.arange(len(label))*0.8
+
+    # draw bars
+    ax.bar(index, n_oracles, bar_width, label='Oracle', color=colors[0], edgecolor='black')
+    ax.bar(index+bar_width, n_dual, bar_width, label='DOLMA', color=colors[1], edgecolor='black')
+
+    ax.set_ylim(0, 160)
+    ax.set_xticks(index + bar_width/2)
+    ax.set_xticklabels(label, ha='center', fontsize=BIG_SIZE, fontweight='bold')  # rotation=45,
+
+    # set y ticks' fontsize
+    ax.yaxis.set_tick_params(labelsize=BIG_SIZE)
+
+    # put the value on the top of the bar
+    for i in range(len(label)):
+        text = str(round(n_oracles[i]))
+        ax.text(index[i], n_oracles[i]+0.1, text, fontsize=BIG_SIZE-2, rotation=0, ha='center')
+
+        text = str(round(n_dual[i]))
+        ax.text(index[i]+bar_width, n_dual[i]+0.1, text, fontsize=BIG_SIZE-2, rotation=0, ha='center')
+
+    # add grid
+    ax.grid(axis='y', linestyle='--', alpha=0.9)
+
+    # set the legend
+    # ax.legend(bbox_to_anchor=(0.56, 1), loc='upper left', borderaxespad=0, ncol=3, frameon=True, edgecolor='black',
+    #              handlelength=1, handletextpad=0.4, fontsize=BIG_SIZE)
+    ax.legend(loc='upper right', fontsize=BIG_SIZE, edgecolor='black', frameon=True, handlelength=1, handletextpad=0.4)
+    ax.set_ylabel('Execution Time (min)', fontsize=BIGGER_SIZE, fontweight='bold')
+    ax.set_xlabel('Number of Threads', fontsize=BIGGER_SIZE, fontweight='bold')
+    # ax.set_title('Multi-threads Performance', fontsize=BIGGER_SIZE + 3, fontweight='bold')
+    # ax.set_xlabel('Block Size', fontsize=BIGGER_SIZE, fontweight='bold')
+    # plt.suptitle('Random Write Micro Benchmark', fontsize=BIGGER_SIZE+3, fontweight='bold')
+    plt.tight_layout()
+    # plt.show()
+    plt.savefig('./figures/cg_or_multithreads.pdf')
+
+
+def draw_dual_buf():
+    label = ['CG(50%)', 'MG(1%)', 'BT(20%)', 'FT(20%)', 'LU(50%)']
+    with_dual = [8009, 1152, 14670, 2342, 9252]
+    without_dual = [8706, 1201, 15597, 2369, 9642]
+    with_dual_min = [x/60 for x in with_dual]
+    without_dual_min = [x/60 for x in without_dual]
+    colors = ['#B6BBC4', '#FFC470']
+
+    fig, ax = plt.subplots(1, 1, figsize=(10, 6))
+    bar_width = 0.3
+
+    index = np.arange(len(label))*0.8
+
+    # draw bars
+    ax.bar(index, with_dual_min, bar_width, label='With dual buf', color=colors[0], edgecolor='black')
+    ax.bar(index+bar_width, without_dual_min, bar_width, label='Without dual buf', color=colors[1], edgecolor='black')
+
+    ax.set_ylim(0, 275)
+    ax.set_xticks(index + bar_width/2)
+    ax.set_xticklabels(label, ha='center', fontsize=BIG_SIZE-4, fontweight='bold')  # rotation=45,
+
+    # set y ticks' fontsize
+    ax.yaxis.set_tick_params(labelsize=BIG_SIZE)
+
+    # put the value on the top of the bar
+    for i in range(len(label)):
+        text = str(round(with_dual_min[i]))
+        ax.text(index[i], with_dual_min[i]+0.1, text, fontsize=BIG_SIZE-2, rotation=0, ha='center')
+
+        text = str(round(without_dual_min[i]))
+        ax.text(index[i]+bar_width, without_dual_min[i]+0.1, text, fontsize=BIG_SIZE-2, rotation=0, ha='center')
+
+    # add grid
+    ax.grid(axis='y', linestyle='--', alpha=0.9)
+
+    # set the legend
+    # ax.legend(bbox_to_anchor=(0.56, 1), loc='upper left', borderaxespad=0, ncol=3, frameon=True, edgecolor='black',
+    #              handlelength=1, handletextpad=0.4, fontsize=BIG_SIZE)
+    ax.legend(loc='upper left', fontsize=BIG_SIZE-4, edgecolor='black', frameon=True, handlelength=1, handletextpad=0.4)
+    ax.set_ylabel('Execution Time (min)', fontsize=BIGGER_SIZE, fontweight='bold')
+    ax.set_xlabel('Problems', fontsize=BIGGER_SIZE, fontweight='bold')
+    # ax.set_title('Multi-threads Performance', fontsize=BIGGER_SIZE + 3, fontweight='bold')
+    # ax.set_xlabel('Block Size', fontsize=BIGGER_SIZE, fontweight='bold')
+    # plt.suptitle('Random Write Micro Benchmark', fontsize=BIGGER_SIZE+3, fontweight='bold')
+    plt.tight_layout()
+    # plt.show()
+    plt.savefig('./figures/performance_breakdown.pdf')
+
+
+def draw_class():
+    label = ['Class B', 'Class C', 'Class D']
+    oracles = [41.43, 208.23, 7783.59]
+    dual = [298.53, 644.4, 11500.97]
+    oracles = [x/60 for x in oracles]
+    dual = [x/60 for x in dual]
+    colors = ['#B6BBC4', '#31304D']
+
+    n_oracles = [x/x for x in oracles]
+    n_dual = [x/y for x, y in zip(dual, oracles)]
+
+    fig, ax = plt.subplots(1, 1, figsize=(11, 7))
+    bar_width = 0.3
+
+    index = np.arange(len(label))*0.8
+
+    # draw bars
+    ax.bar(index, n_oracles, bar_width, label='Oracle', color=colors[0], edgecolor='black')
+    ax.bar(index+bar_width, n_dual, bar_width, label='DOLMA', color=colors[1], edgecolor='black')
+
+    ax.set_ylim(0, 8.5)
+    ax.set_xticks(index + bar_width/2)
+    x_ticklabels = ['Class B\n(0.4GB)', 'Class C\n(3.4GB)', 'Class D\n(27.7GB)']
+    ax.set_xticklabels(x_ticklabels, ha='center', fontsize=BIG_SIZE, fontweight='bold')  # rotation=45,
+
+    # set y ticks' fontsize
+    ax.yaxis.set_tick_params(labelsize=BIG_SIZE)
+
+    # put the value on the top of the bar
+    of = [-0.03, -0.01, -0.05]
+
+
+    for i in range(len(label)):
+        text = str(round(oracles[i]))+'(min)' if i > 0 else '0.7(min)'
+        ax.text(index[i]+of[i], n_oracles[i]+0.1, text, fontsize=BIG_SIZE-1, rotation=0, ha='center')
+
+        text = str(round(dual[i]))+'(min)'
+        ax.text(index[i]+bar_width, n_dual[i]+0.1, text, fontsize=BIG_SIZE-1, rotation=0, ha='center')
+
+
+    # add grid
+    ax.grid(axis='y', linestyle='--', alpha=0.9)
+
+    # set the legend
+    # ax.legend(bbox_to_anchor=(0.56, 1), loc='upper left', borderaxespad=0, ncol=3, frameon=True, edgecolor='black',
+    #              handlelength=1, handletextpad=0.4, fontsize=BIG_SIZE)
+    ax.legend(loc='upper right', fontsize=BIG_SIZE, edgecolor='black', frameon=True, handlelength=1, handletextpad=0.4)
+    ax.set_ylabel('Normalized Execution Time', fontsize=BIGGER_SIZE, fontweight='bold', labelpad=20)
+    ax.set_xlabel('', fontsize=BIGGER_SIZE, fontweight='bold')
+    ax.set_title('', fontsize=BIGGER_SIZE, fontweight='bold')
+    # plt.suptitle('Sensitivity Study on Various Input Problem ', fontsize=BIGGER_SIZE, fontweight='bold')
+    ax.set_title('Sensitivity Study on Various Input Problem', fontsize=BIGGER_SIZE + 3, fontweight='bold')
+    plt.tight_layout()
+    plt.savefig('./figures/class.pdf')
+    plt.show()
+
+
 if __name__ == '__main__':
     # draw_random_write()
     # draw_random_read()
     # draw_seq_read()
     # draw_seq_write()
-    # draw_cg_perform()
+
     # draw_NP_1()
+
+    # draw_cg_perform()
     # draw_mg_perform()
     # draw_bt_perform()
-    draw_ft_perform()
+    # draw_ft_perform()
+    # draw_lu_perform()
+
+    # draw_cg_multithreads()
+    # draw_cg_or_multithreads()
+
+    # draw_class()
+
+    draw_dual_buf()
