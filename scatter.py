@@ -24,12 +24,18 @@ from matplotlib.lines import Line2D
 #         'Seasonal_forecasting': Seasonal_forecasting}
 
 
-Science_language = [[2015, 2017, 2019, 2020, 2021, 2022, 2023], [10, 110, 110, 406, 700, 1300, 22000]]
-Biology = [[2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023], [30, 10, 41, 100, 355, 770, 34000, 70000]]
-Geography = [[2015, 2016, 2017, 2019, 2021, 2022, 2024], [10, 60, 40, 41, 82, 110, 30000]]
-Climate = [[2016, 2017, 2018, 2019, 2020, 2021, 2023, 2024], [10, 10, 20, 25, 108, 200, 500, 1300]]
+# Science_language = [[2015, 2017, 2019, 2020, 2021, 2022, 2023], [10, 110, 110, 406, 700, 1300, 22000]]
+# Material = [[2015, 2017, 2017, 2020, 2021], [1, 2, 3.2, 1000, 112], ['OQMD', 'ChEMBLE', 'PubChemQC', 'ZINC20', 'PubChem']]
+# Biology = [[2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023], [30, 10, 41, 100, 355, 770, 34000, 70000], ['Alphafold2']]
+# Geography = [[2015, 2016, 2017, 2019, 2021, 2022, 2024], [10, 60, 40, 41, 82, 110, 30000]]
+# Climate = [[2016, 2017, 2018, 2019, 2020, 2021, 2023, 2024], [10, 10, 20, 25, 108, 200, 500, 1300]]
 
-data = {'Science_language': Science_language, 'Biology': Biology, 'Geography': Geography, 'Climate': Climate}
+Material = [[2015, 2017, 2017, 2020, 2021], [1, 2, 3.2, 1000, 112], ['OQMD', 'ChEMBLE', 'PubChemQC', 'ZINC20', 'PubChem']]
+Biology = [[2020, 2021, 2022, 2023, 2024], [93, 650, 738, 4000, 9000], ['Alphafold2', 'ESM-1v', 'ProtGPT2', 'ProGen2', 'ProLLaMA']]
+Geography = [[2022, 2023, 2024], [80, 7000, 30000], ['SpaBERT', 'K2', 'GeoGalactica']]
+Climate = [[2016, 2017, 2018, 2022, 2023, 2023, 2024], [1, 66, 10, 37, 82, 110, 6000], ['LSTM', 'ExtremeWeather', 'ConvLSTM', 'GraphCast', 'ClimateBERT', 'ClimaX', 'OceanGPT']]
+
+data = {'Material': Material, 'Biology': Biology, 'Geography': Geography, 'Climate': Climate}
 
 # colors = {'Mathmatics':'red', 'Science_language':'blue', 'Physics':'green', 
 #           'Biology':'yellow', 'Geography':'purple', 'Chemistry':'orange'}
@@ -47,6 +53,20 @@ for i in range(len(data)):
     parameters = data[label[i]][1]
     
     plt.scatter(year, parameters, color=colors[label[i]], label=label[i], s=[200*np.log(p+1) for p in parameters])
+
+# put text on the points
+offset = [[[0, 0.1], [0, -1], [0, 0.5], [0, 1000], [0, 80]], 
+          [[-1, 0], [0, 500], [1, 0], [0, -2500], [0, 1000]], 
+          [[0, 35], [0, 6000], [0, 40000]], 
+          [[0, 0.1],  [0, 30], [0, 5], [0, -23], [0.1, -50], [0, 75], [0, -1000]]]
+for i in range(len(data)):
+    year = data[label[i]][0]
+    parameters = data[label[i]][1]
+    labels = data[label[i]][2]
+    ofs = offset[i]
+    s=[200*np.log(p+1)//2 for p in parameters]
+    for j in range(len(year)):
+        plt.text(year[j]+ofs[j][0], parameters[j]+ofs[j][1], labels[j], fontsize=12, horizontalalignment='center', verticalalignment='bottom')
 
 # log scale y-axis
 plt.yscale('log')
@@ -77,7 +97,8 @@ plt.xlabel("Year", fontsize=20)
 plt.ylabel("Parameters (in Millions)", fontsize=20)
 
 #set ylimit to 100
-plt.ylim(7, 120000)
+plt.xlim(2014, 2024.9)
+plt.ylim(0.6, 120000)
 
 # set ticks fontsize
 plt.xticks(fontsize=15)
