@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 from matplotlib.ticker import MaxNLocator
+from matplotlib.font_manager import FontProperties
 from matplotlib.lines import Line2D
 
 # mathmatics = [[2021, 2022, 2023, 2024], [0.34, 2.7, 70, 70]]
@@ -33,7 +34,7 @@ from matplotlib.lines import Line2D
 Material = [[2015, 2017, 2017, 2020, 2021], [1, 2, 3.2, 1000, 112], ['OQMD', 'ChEMBLE', 'PubChemQC', 'ZINC20', 'PubChem']]
 Biology = [[2020, 2021, 2022, 2023, 2024], [93, 650, 738, 4000, 9000], ['Alphafold2', 'ESM-1v', 'ProtGPT2', 'ProGen2', 'ProLLaMA']]
 Geography = [[2022, 2023, 2024], [80, 7000, 30000], ['SpaBERT', 'K2', 'GeoGalactica']]
-Climate = [[2016, 2017, 2018, 2022, 2023, 2023, 2024], [1, 66, 10, 37, 82, 110, 6000], ['LSTM', 'ExtremeWeather', 'ConvLSTM', 'GraphCast', 'ClimateBERT', 'ClimaX', 'OceanGPT']]
+Climate = [[2016, 2017, 2018, 2022, 2023, 2023, 2024, 2023], [1, 66, 10, 37, 82, 110, 6000, 1000000], ['LSTM', 'ExtremeWeather', 'ConvLSTM', 'GraphCast', 'ClimateBERT', 'ClimaX', 'OceanGPT', 'PanGu-Σ']]
 
 data = {'Material': Material, 'Biology': Biology, 'Geography': Geography, 'Climate': Climate}
 
@@ -55,10 +56,10 @@ for i in range(len(data)):
     plt.scatter(year, parameters, color=colors[label[i]], label=label[i], s=[200*np.log(p+1) for p in parameters])
 
 # put text on the points
-offset = [[[0, 0.1], [0, -1], [0, 0.5], [0, 1000], [0, 80]], 
-          [[-1, 0], [0, 500], [1, 0], [0, -2500], [0, 1000]], 
-          [[0, 35], [0, 6000], [0, 40000]], 
-          [[0, 0.1],  [0, 30], [0, 5], [0, -23], [0.1, -50], [0, 75], [0, -1000]]]
+offset = [[[-0.2, 0.1], [0.5, -1], [0, 0.5], [0, 1000], [0, 80]], 
+          [[-1, -60], [0, 500], [1, 0], [0, -2500], [0, 1000]], 
+          [[0, 30], [0, 10000], [-0.3, 40000]], 
+          [[0, 0.1],  [-0.2, 30], [0, 5], [0, -23], [0.1, -50], [0, 75], [0, -1000], [0, 0]]]
 for i in range(len(data)):
     year = data[label[i]][0]
     parameters = data[label[i]][1]
@@ -66,7 +67,8 @@ for i in range(len(data)):
     ofs = offset[i]
     s=[200*np.log(p+1)//2 for p in parameters]
     for j in range(len(year)):
-        plt.text(year[j]+ofs[j][0], parameters[j]+ofs[j][1], labels[j], fontsize=12, horizontalalignment='center', verticalalignment='bottom')
+        plt.text(year[j]+ofs[j][0], parameters[j]+ofs[j][1], labels[j], fontsize=16, horizontalalignment='center', 
+                 verticalalignment='bottom', color='black', weight='bold')
 
 # log scale y-axis
 plt.yscale('log')
@@ -81,24 +83,40 @@ legend_elements = [Line2D([0], [0], marker='o', color='black', label=f'{size}M',
 
 # 创建第二个图例
 second_legend = plt.legend(handles=legend_elements, title="Parameters", loc='upper left', 
-                           bbox_to_anchor=(1.02, 0.45), title_fontsize='large', fontsize='large'
+                           bbox_to_anchor=(1.02, 0.45), title_fontsize=18, fontsize=15
                            , borderaxespad=0., ncol=1, frameon=False, labelspacing=1.1)
+second_legend.get_title().set_fontweight('bold')
 
 # 添加第二个图例到图中
 plt.gca().add_artist(second_legend)
 
 # Customize legend
-handles, labels = plt.gca().get_legend_handles_labels()
-unique_labels = dict(zip(labels, handles))
-plt.legend(unique_labels.values(), unique_labels.keys(), scatterpoints=1, title="Domain", title_fontsize='large', loc='upper left', fontsize='large', 
-           markerscale=0.5, bbox_to_anchor=(1., 0.95), borderaxespad=0., ncol=1, frameon=False)
+from matplotlib.lines import Line2D
 
-plt.xlabel("Year", fontsize=20)
-plt.ylabel("Parameters (in Millions)", fontsize=20)
+# 在绘制散点图之后，创建图例之前
+
+# 创建自定义图例元素
+legend_elements = [Line2D([0], [0], marker='o', color='w', label=label,
+                          markerfacecolor=color, markersize=10)
+                   for label, color in colors.items()]
+
+# 创建自定义图例
+legend = plt.legend(handles=legend_elements, title="Domain", title_fontsize=18, markerscale=1.5, 
+                    loc='upper left', fontsize=15, bbox_to_anchor=(1., 0.95), 
+                    borderaxespad=0., ncol=1, frameon=False)
+legend.get_title().set_fontweight('bold')
+
+# handles, labels = plt.gca().get_legend_handles_labels()
+# unique_labels = dict(zip(labels, handles))
+# plt.legend(unique_labels.values(), unique_labels.keys(), scatterpoints=1, title="Domain", title_fontsize='large', loc='upper left', fontsize='large', 
+#            markerscale=0.5, bbox_to_anchor=(1., 0.95), borderaxespad=0., ncol=1, frameon=False)
+
+# plt.xlabel("Year", fontsize=20)
+plt.ylabel("Parameters (in Millions)", fontsize=20, weight='bold')
 
 #set ylimit to 100
 plt.xlim(2014, 2024.9)
-plt.ylim(0.6, 120000)
+plt.ylim(0.6, 3500000)
 
 # set ticks fontsize
 plt.xticks(fontsize=15)
@@ -107,4 +125,4 @@ plt.yticks(fontsize=15)
 
 
 plt.tight_layout()
-plt.savefig('scatter.png')
+plt.savefig('scatter.pdf')

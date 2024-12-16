@@ -1,12 +1,13 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from mpl_toolkits.axes_grid1 import make_axes_locatable
+from matplotlib.ticker import ScalarFormatter
 
 figure_size = (20, 8)
 SMALL_SIZE = 8
 MEDIUM_SIZE = 10
 BIG_SIZE = 26
-BIGGER_SIZE = 26
+BIGGER_SIZE = 30
 
 # colors = ['#4793AF', '#FFC470', '#DD5746']
 colors = ['#B6BBC4', '#B31312']
@@ -418,11 +419,13 @@ def draw_cg_perform():
 
     line_data = [x/(1024**2) for x in data['PeakMem']]
     bar_data = [x/60 for x in data['Exetime']]
+    
+    bar_text = [f'{x/bar_data[0]:.2f}x' for x in bar_data]
 
     x_ticklabels = data['label']
-    title = 'CG'
+    title = ''
 
-    line_label = 'Peak Memory Usage (GB)'
+    line_label = ''
     bar_label = 'Execution Time (min)'
     xlabel = ''
 
@@ -434,12 +437,12 @@ def draw_cg_perform():
 
     file_name = './figures/CG_performance.pdf'
 
-    y_tickles = [0, 20, 40, 60, 80, 100, 120, 140, 160, 180, 200, 220]
-    y_limits = [[0, 225], [0, 9.3]]
+    y_tickles = [0, 20, 40, 60, 80, 100, 120, 140, 160, 180, 200, 220, 240, 260]
+    y_limits = [[0, 280], [0, 9.3]]
 
     draw_double_axis(bar_data, line_data, bar_label, line_label, title, xlabel, x_ticklabels, file_name, bar_color,
                      line_color, bar_scale, line_scale, fig_size=(13, 8), font_size=BIGGER_SIZE, y_tickles=y_tickles,
-                     limits=y_limits)
+                     limits=y_limits, bar_text=bar_text)
 
 
 def draw_mg_perform():
@@ -448,12 +451,13 @@ def draw_mg_perform():
 
     line_data = [x for x in data['PeakMem']]
     bar_data = [x / 60 for x in data['Exetime']]
+    bar_text = [f'{x/bar_data[0]:.2f}x' for x in bar_data]
 
     x_ticklabels = data['label']
-    title = 'MG'
+    title = ''
 
-    line_label = 'Peak Memory Usage (GB)'
-    bar_label = 'Execution Time (min)'
+    line_label = ''
+    bar_label = ''
     xlabel = ''
 
     bar_scale = 'linear'
@@ -465,11 +469,11 @@ def draw_mg_perform():
     file_name = './figures/MG_performance.pdf'
 
     y_tickles = None
-    y_limits = [[0, 28], [0, 30]]
+    y_limits = [[0, 280], [0, 30]]
 
     draw_double_axis(bar_data, line_data, bar_label, line_label, title, xlabel, x_ticklabels, file_name, bar_color,
                      line_color, bar_scale, line_scale, fig_size=(13, 8), font_size=BIGGER_SIZE, y_tickles=y_tickles,
-                     limits=y_limits)
+                     limits=y_limits, bar_text=bar_text)
 
 
 def draw_bt_perform():
@@ -478,12 +482,13 @@ def draw_bt_perform():
 
     line_data = [x for x in data['PeakMem']]
     bar_data = [x / 60 for x in data['Exetime']]
+    bar_text = [f'{x/bar_data[0]:.2f}x' for x in bar_data]
 
     x_ticklabels = data['label']
-    title = 'BT'
+    title = ''
 
-    line_label = 'Peak Memory Usage (GB)'
-    bar_label = 'Execution Time (min)'
+    line_label = ''
+    bar_label = ''
     xlabel = ''
 
     bar_scale = 'linear'
@@ -495,11 +500,11 @@ def draw_bt_perform():
     file_name = './figures/BT_performance.pdf'
 
     y_tickles = None
-    y_limits = [[0, 600], [0, 13]]
+    y_limits = [[0, 350], [0, 13]]
 
     draw_double_axis(bar_data, line_data, bar_label, line_label, title, xlabel, x_ticklabels, file_name, bar_color,
                      line_color, bar_scale, line_scale, fig_size=(13, 8), font_size=BIGGER_SIZE, y_tickles=y_tickles,
-                     limits=y_limits)
+                     limits=y_limits, bar_text=bar_text)
 
 
 def draw_ft_perform():
@@ -508,12 +513,13 @@ def draw_ft_perform():
 
     line_data = [x for x in data['PeakMem']]
     bar_data = [x / 60 for x in data['Exetime']]
+    bar_text = [f'{x/bar_data[0]:.2f}x' for x in bar_data]
 
     x_ticklabels = data['label']
-    title = 'FT'
+    title = ''
 
-    line_label = 'Peak Memory Usage (GB)'
-    bar_label = 'Execution Time (min)'
+    line_label = 'Local Memory Usage (GB)'
+    bar_label = ''
     xlabel = ''
 
     bar_scale = 'linear'
@@ -525,11 +531,11 @@ def draw_ft_perform():
     file_name = './figures/FT_performance.pdf'
 
     y_tickles = None
-    y_limits = [[0, 55], [0, 100]]
+    y_limits = [[0, 125], [0, 100]]
 
     draw_double_axis(bar_data, line_data, bar_label, line_label, title, xlabel, x_ticklabels, file_name, bar_color,
                      line_color, bar_scale, line_scale, fig_size=(13, 8), font_size=BIGGER_SIZE, y_tickles=y_tickles,
-                     limits=y_limits)
+                     limits=y_limits, bar_text=bar_text)
 
 
 def draw_lu_perform():
@@ -538,11 +544,12 @@ def draw_lu_perform():
 
     line_data = [x for x in data['PeakMem']]
     bar_data = [x / 60 for x in data['Exetime']]
+    bar_text = [f'{x/bar_data[0]:.2f}x' for x in bar_data]
 
     x_ticklabels = data['label']
-    title = 'LU'
+    title = ''
 
-    line_label = 'Peak Memory Usage (GB)'
+    line_label = ''
     bar_label = 'Execution Time (min)'
     xlabel = ''
 
@@ -555,16 +562,109 @@ def draw_lu_perform():
     file_name = './figures/LU_performance.pdf'
 
     y_tickles = None
-    y_limits = [[0, 220], [0, 11]]
+    y_limits = [[0, 300], [0, 11]]
 
     draw_double_axis(bar_data, line_data, bar_label, line_label, title, xlabel, x_ticklabels, file_name, bar_color,
                      line_color, bar_scale, line_scale, fig_size=(13, 8), font_size=BIGGER_SIZE, y_tickles=y_tickles,
-                     limits=y_limits)
+                     limits=y_limits, bar_text=bar_text)
+
+def draw_mn_perform():
+    datas = read_data('./log_files/motivation.txt')
+    data = datas['MN performance']
+
+    line_data = [x for x in data['PeakMem']]
+    bar_data = [x for x in data['Exetime']]
+    bar_text = [f'{x/bar_data[0]:.2f}x' for x in bar_data]
+
+    x_ticklabels = data['label']
+    title = ''
+
+    line_label = 'Local Memory Usage (GB)'
+    bar_label = ''
+    xlabel = ''
+
+    bar_scale = 'linear'
+    line_scale = 'linear'
+
+    bar_color = colors[0]
+    line_color = colors[1]
+
+    file_name = './figures/MN_performance.pdf'
+
+    y_tickles = None
+    y_limits = [[0, 83], [0, 39]]
+
+    draw_double_axis(bar_data, line_data, bar_label, line_label, title, xlabel, x_ticklabels, file_name, bar_color,
+                     line_color, bar_scale, line_scale, fig_size=(13, 8), font_size=BIGGER_SIZE, y_tickles=y_tickles,
+                     limits=y_limits, bar_text=bar_text)
+
+def draw_is_perform():
+    datas = read_data('./log_files/motivation.txt')
+    data = datas['IS performance']
+
+    line_data = [x for x in data['PeakMem']]
+    bar_data = [x / 60 for x in data['Exetime']]
+    bar_text = [f'{x/bar_data[0]:.2f}x' for x in bar_data]
+
+    x_ticklabels = data['label']
+    title = ''
+
+    line_label = ''
+    bar_label = ''
+    xlabel = ''
+
+    bar_scale = 'linear'
+    line_scale = 'linear'
+
+    bar_color = colors[0]
+    line_color = colors[1]
+
+    file_name = './figures/IS_performance.pdf'
+
+    y_tickles = None
+    y_limits = [[0, 7], [0, 35]]
+
+    draw_double_axis(bar_data, line_data, bar_label, line_label, title, xlabel, x_ticklabels, file_name, bar_color,
+                     line_color, bar_scale, line_scale, fig_size=(13, 8), font_size=BIGGER_SIZE, y_tickles=y_tickles,
+                     limits=y_limits, bar_text=bar_text)
+
+
+
+def draw_xs_perform():
+    datas = read_data('./log_files/motivation.txt')
+    data = datas['XSBench performance']
+
+    line_data = [x for x in data['PeakMem']]
+    bar_data = [x / 60 for x in data['Exetime']]
+    bar_text = [f'{x/bar_data[0]:.2f}x' for x in bar_data]
+
+    x_ticklabels = data['label']
+    title = ''
+
+    line_label = ''
+    bar_label = ''
+    xlabel = ''
+
+    bar_scale = 'linear'
+    line_scale = 'linear'
+
+    bar_color = colors[0]
+    line_color = colors[1]
+
+    file_name = './figures/XS_performance.pdf'
+
+    y_tickles = None
+    y_limits = [[0, 2.5e-2], [0, 6]]
+
+    draw_double_axis(bar_data, line_data, bar_label, line_label, title, xlabel, x_ticklabels, file_name, bar_color,
+                     line_color, bar_scale, line_scale, fig_size=(13, 8), font_size=BIGGER_SIZE, y_tickles=y_tickles,
+                     limits=y_limits, bar_text=bar_text, log=True)
+
 
 
 def draw_double_axis(bar_data, line_data, bar_label, line_label, title, xlabel, x_ticklabels, file_name, bar_color,
-                     line_color, bar_scale='linear', line_scale='linear', fig_size=(20, 8), font_size=BIGGER_SIZE,
-                     y_tickles=None, limits=None):
+                     line_color, bar_scale='log', line_scale='linear', fig_size=(20, 8), font_size=BIGGER_SIZE,
+                     y_tickles=None, limits=None, legend_bool=False, bar_text=None, log=False):
     fig, ax = plt.subplots(1, 1, figsize=fig_size)
     ax2 = ax.twinx()
 
@@ -573,19 +673,20 @@ def draw_double_axis(bar_data, line_data, bar_label, line_label, title, xlabel, 
     # 绘制柱状图
     bar_width = 0.3
     ax.bar(index, bar_data, bar_width, color=bar_color, edgecolor='black')
-    ax.set_ylabel(bar_label, fontsize=font_size, fontweight='bold')
+    ax.set_ylabel(bar_label, fontsize=font_size+3, fontweight='bold') if bar_label else None
     ax.set_xlabel(xlabel, fontsize=font_size, fontweight='bold')
-    ax.set_title(title, fontsize=font_size+3, fontweight='bold')
+    ax.set_title(title, fontsize=font_size+3, fontweight='bold') if title else None
 
     # 绘制折线图
     ax2.plot(index, line_data, color=line_color, marker='o', markersize=15, label=line_label, linewidth=4)
-    ax2.set_ylabel(line_label, fontsize=font_size, fontweight='bold')
+    ax2.set_ylabel(line_label, fontsize=font_size+3, fontweight='bold') if line_label else None
 
     # 调整x轴刻度标签
     ax.set_xticks(index)
     ax.set_xticklabels(x_ticklabels, fontsize=font_size, fontweight='bold')
 
     # set y ticks' format
+    ax.yaxis.set_major_formatter(ScalarFormatter())
     ax.yaxis.set_tick_params(labelsize=BIG_SIZE)
     ax2.yaxis.set_tick_params(labelsize=BIG_SIZE)
 
@@ -603,12 +704,17 @@ def draw_double_axis(bar_data, line_data, bar_label, line_label, title, xlabel, 
 
     # put the number near the line
     for i in range(len(line_data)):
-        ax2.text(index[i], line_data[i], round(line_data[i], 1), ha='center', va='bottom', fontsize=BIG_SIZE)
+        ax2.text(index[i], line_data[i], round(line_data[i], 1), ha='center', va='bottom', fontsize=BIG_SIZE+3, color='g')
 
-    bar_proxy = plt.Rectangle((0, 0), 1, 1, fc=bar_color)
-    line_proxy = plt.Line2D([0], [0], color=line_color, lw=2)
-    ax.legend(handles=[bar_proxy, line_proxy], labels=[bar_label, line_label], loc='upper right', fontsize=BIG_SIZE,
-              edgecolor='black', frameon=True, handlelength=1, handletextpad=0.4, bbox_to_anchor=(0.8, 1.02))
+    if legend_bool:
+        bar_proxy = plt.Rectangle((0, 0), 1, 1, fc=bar_color)
+        line_proxy = plt.Line2D([0], [0], color=line_color, lw=2)
+        ax.legend(handles=[bar_proxy, line_proxy], labels=[bar_label, line_label], loc='upper right', fontsize=BIG_SIZE+3,
+                  dgecolor='black', frameon=True, handlelength=1, handletextpad=0.4, bbox_to_anchor=(0.8, 1.02))
+    
+    if bar_text:
+        for i in range(len(bar_data)):
+            ax.text(index[i], bar_data[i], bar_text[i], ha='center', va='bottom', fontsize=BIG_SIZE+3, color='b')
 
     ax.grid(axis='y', linestyle='--', alpha=0.9, zorder=0)
 
@@ -731,46 +837,92 @@ def draw_cg_or_multithreads():
     n_oracles = [x/60 for x in oracles]
     n_dual = [x/60 for x in dual]
     colors = ['#B6BBC4', '#FFC470']
+    
+    apps = ['CG', 'MG', 'BT', 'FT', 'LU', 'IS']
+    datas = {'CG': {'Oracle': [8706, 2099, 1111, 573, 396], 'DOLMA': [8706, 4675, 2671, 1125, 750]},}
+    
+    data = {
+        'CG': [
+            [8239, 2099.09, 1111.26, 573.2, 497],  # Oracle
+            [13396, 4089, 2199, 1071.0736, 690]  # DOLMA
+        ],
+        'MG': [
+            [709.91, 217.48, 123.81, 98.63, 90.91],  # Oracle
+            [34.962 * 50, 19.68 * 50, 10.53 * 50, 4.69 * 50, 3.36 * 50]  # DOLMA
+        ],
+        'FT': [
+            [176 * 25, 1446.86, 751.15, 416.34, 273.38],  # Oracle
+            [294 + 206.73 * 25, 91.18 + 53.84 * 25, 32.76 * 25 + 64.84, 19.35 * 25 + 41.79, 11.13 * 25 + 30.25]  # DOLMA
+        ],
+        'BT': [
+            [15000, 4122.32, 2219.74, 1135.52, 788.57],  # Oracle
+            [65.21 * 250, 20.22 * 250, 12.83 * 250, 9.69 * 250, 8.68 * 250]  # DOLMA
+        ],
+        'LU': [
+            [10728, 2933.75, 1654.08, 1011.88, 726.27],  # Oracle
+            [45.04 * 300, 15.32 * 300, 7.95 * 300, 5.326 * 300, 3.92 * 300]  # DOLMA
+        ],
+        'IS': [
+            [202.32, 92.53,	38.18,	20.42,	18.52],
+            [293.8149, 119,	68,	37,	34.7]
+        ]
+    }
+    
+    
+    for app in apps:
+        oracle = data[app][0]
+        dolma = data[app][1]
+        n_oracles = [x/60 for x in oracle]
+        n_dual = [x/60 for x in dolma]
+    
 
-    fig, ax = plt.subplots(1, 1, figsize=(10, 6))
-    bar_width = 0.3
+        fig, ax = plt.subplots(1, 1, figsize=(10, 6))
+        bar_width = 0.3
 
-    index = np.arange(len(label))*0.8
+        index = np.arange(len(label))*0.8
 
-    # draw bars
-    ax.bar(index, n_oracles, bar_width, label='Oracle', color=colors[0], edgecolor='black')
-    ax.bar(index+bar_width, n_dual, bar_width, label='DOLMA', color=colors[1], edgecolor='black')
+        # draw bars
+        ax.bar(index, n_oracles, bar_width, label='Oracle', color=colors[0], edgecolor='black')
+        ax.bar(index+bar_width, n_dual, bar_width, label='DOLMA', color=colors[1], edgecolor='black')
+        
+        ylim = 1.1*max(max(n_oracles), max(n_dual))
+        ax.set_ylim(0, ylim)
+        ax.set_xticks(index + bar_width/2)
+        label = ['1', '4', '8', '16', "24"]
+        ax.set_xticklabels(label, ha='center', fontsize=BIG_SIZE, fontweight='bold')  # rotation=45,
 
-    ax.set_ylim(0, 160)
-    ax.set_xticks(index + bar_width/2)
-    ax.set_xticklabels(label, ha='center', fontsize=BIG_SIZE, fontweight='bold')  # rotation=45,
+        # set y ticks' fontsize
+        ax.yaxis.set_tick_params(labelsize=BIG_SIZE)
 
-    # set y ticks' fontsize
-    ax.yaxis.set_tick_params(labelsize=BIG_SIZE)
+        # put the value on the top of the bar
+        for i in range(len(label)):
+            text = str(round(n_oracles[i], 1))
+            ax.text(index[i], n_oracles[i]+0.01*ylim, text, fontsize=BIG_SIZE-2, rotation=0, ha='center')
 
-    # put the value on the top of the bar
-    for i in range(len(label)):
-        text = str(round(n_oracles[i]))
-        ax.text(index[i], n_oracles[i]+0.1, text, fontsize=BIG_SIZE-2, rotation=0, ha='center')
+            text = str(round(n_dual[i], 1))
+            ax.text(index[i]+bar_width, n_dual[i]+0.01*ylim, text, fontsize=BIG_SIZE-2, rotation=0, ha='center')
 
-        text = str(round(n_dual[i]))
-        ax.text(index[i]+bar_width, n_dual[i]+0.1, text, fontsize=BIG_SIZE-2, rotation=0, ha='center')
+        # add grid
+        ax.grid(axis='y', linestyle='--', alpha=0.9)
 
-    # add grid
-    ax.grid(axis='y', linestyle='--', alpha=0.9)
+        # set the legend
+        # ax.legend(bbox_to_anchor=(0.56, 1), loc='upper left', borderaxespad=0, ncol=2, frameon=True, edgecolor='black',
+        #              handlelength=1, handletextpad=0.4, fontsize=BIG_SIZE) if app == 'CG' else None
+        ax.legend(loc='upper right', fontsize=BIG_SIZE, edgecolor='black', frameon=True, handlelength=1, handletextpad=0.4) if app == 'CG' else None
+        ax.set_ylabel('Execution Time (min)', fontsize=BIGGER_SIZE, fontweight='bold') if app in ['CG', 'FT'] else None
+        
+        x_pos = index[-1] + 0.7 # + bar_width / 2
 
-    # set the legend
-    # ax.legend(bbox_to_anchor=(0.56, 1), loc='upper left', borderaxespad=0, ncol=3, frameon=True, edgecolor='black',
-    #              handlelength=1, handletextpad=0.4, fontsize=BIG_SIZE)
-    ax.legend(loc='upper right', fontsize=BIG_SIZE, edgecolor='black', frameon=True, handlelength=1, handletextpad=0.4)
-    ax.set_ylabel('Execution Time (min)', fontsize=BIGGER_SIZE, fontweight='bold')
-    ax.set_xlabel('Number of Threads', fontsize=BIGGER_SIZE, fontweight='bold')
-    # ax.set_title('Multi-threads Performance', fontsize=BIGGER_SIZE + 3, fontweight='bold')
-    # ax.set_xlabel('Block Size', fontsize=BIGGER_SIZE, fontweight='bold')
-    # plt.suptitle('Random Write Micro Benchmark', fontsize=BIGGER_SIZE+3, fontweight='bold')
-    plt.tight_layout()
-    # plt.show()
-    plt.savefig('./figures/cg_or_multithreads.pdf')
+        # 在最后一个 x 轴刻度下方添加 '#thread'
+        ax.text(x_pos, 0, '#thread', fontsize=BIG_SIZE, fontweight='bold', ha='center', va='top', transform=ax.get_xaxis_transform())
+
+        # ax.set_xlabel('Number of Threads', fontsize=BIGGER_SIZE, fontweight='bold')
+        # ax.set_title('Multi-threads Performance', fontsize=BIGGER_SIZE + 3, fontweight='bold')
+        # ax.set_xlabel('Block Size', fontsize=BIGGER_SIZE, fontweight='bold')
+        # plt.suptitle('Random Write Micro Benchmark', fontsize=BIGGER_SIZE+3, fontweight='bold')
+        plt.tight_layout()
+        # plt.show()
+        plt.savefig(f'./figures/{app}_or_multithreads.pdf')
 
 
 def draw_dual_buf():
@@ -819,7 +971,7 @@ def draw_dual_buf():
     # plt.suptitle('Random Write Micro Benchmark', fontsize=BIGGER_SIZE+3, fontweight='bold')
     plt.tight_layout()
     # plt.show()
-    plt.savefig('./figures/performance_breakdown.pdf')
+    plt.savefig('./figures/performance_breakdown.png')
 
 
 def draw_class():
@@ -892,10 +1044,13 @@ if __name__ == '__main__':
     # draw_bt_perform()
     # draw_ft_perform()
     # draw_lu_perform()
+    # draw_mn_perform()
+    draw_is_perform()
+    # draw_xs_perform()
 
     # draw_cg_multithreads()
-    # draw_cg_or_multithreads()
+    draw_cg_or_multithreads()
 
     # draw_class()
 
-    draw_dual_buf()
+    # draw_dual_buf()
