@@ -817,8 +817,8 @@ def draw_cg_multithreads():
     ax.yaxis.set_tick_params(labelsize=BIG_SIZE)
     ax.set_ylim(0, 160)
 
-    for i in range(len(labels)):
-        ax.text(index[i], y_values[i], round(y_values[i]), ha='center', va='bottom', fontsize=BIG_SIZE)
+    # for i in range(len(labels)):
+    #     ax.text(index[i], y_values[i], round(y_values[i]), ha='center', va='bottom', fontsize=BIG_SIZE)
 
     ax.grid(axis='y', linestyle='--', alpha=0.9, zorder=0)
 
@@ -894,13 +894,13 @@ def draw_cg_or_multithreads():
         # set y ticks' fontsize
         ax.yaxis.set_tick_params(labelsize=BIG_SIZE)
 
-        # put the value on the top of the bar
-        for i in range(len(label)):
-            text = str(round(n_oracles[i], 1))
-            ax.text(index[i], n_oracles[i]+0.01*ylim, text, fontsize=BIG_SIZE-2, rotation=0, ha='center')
+        # # put the value on the top of the bar
+        # for i in range(len(label)):
+        #     text = str(round(n_oracles[i], 1))
+        #     ax.text(index[i], n_oracles[i]+0.01*ylim, text, fontsize=BIG_SIZE-2, rotation=0, ha='center')
 
-            text = str(round(n_dual[i], 1))
-            ax.text(index[i]+bar_width, n_dual[i]+0.01*ylim, text, fontsize=BIG_SIZE-2, rotation=0, ha='center')
+        #     text = str(round(n_dual[i], 1))
+        #     ax.text(index[i]+bar_width, n_dual[i]+0.01*ylim, text, fontsize=BIG_SIZE-2, rotation=0, ha='center')
 
         # add grid
         ax.grid(axis='y', linestyle='--', alpha=0.9)
@@ -1045,11 +1045,11 @@ if __name__ == '__main__':
     # draw_ft_perform()
     # draw_lu_perform()
     # draw_mn_perform()
-    draw_is_perform()
+    # draw_is_perform()
     # draw_xs_perform()
 
-    # draw_cg_multithreads()
-    draw_cg_or_multithreads()
+    draw_cg_multithreads()
+    # draw_cg_or_multithreads()
 
     # draw_class()
 
