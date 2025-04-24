@@ -926,11 +926,11 @@ def draw_cg_or_multithreads():
 
 
 def draw_dual_buf():
-    label = ['CG(50%)', 'MG(1%)', 'BT(20%)', 'FT(20%)', 'LU(50%)']
-    with_dual = [8009, 1152, 14670, 2342, 9252]
-    without_dual = [8706, 1201, 15597, 2369, 9642]
-    with_dual_min = [x/60 for x in with_dual]
-    without_dual_min = [x/60 for x in without_dual]
+    label = ['CG', 'MG', 'BT', 'FT', 'LU', 'IS']
+    with_dual = [138, 20, 262, 91, 154, 5]
+    without_dual = [223, 29, 272, 102, 161, 5]
+    # with_dual_min = [x/60 for x in with_dual]
+    # without_dual_min = [x/60 for x in without_dual]
     colors = ['#B6BBC4', '#FFC470']
 
     fig, ax = plt.subplots(1, 1, figsize=(10, 6))
@@ -939,8 +939,8 @@ def draw_dual_buf():
     index = np.arange(len(label))*0.8
 
     # draw bars
-    ax.bar(index, with_dual_min, bar_width, label='With dual buf', color=colors[0], edgecolor='black')
-    ax.bar(index+bar_width, without_dual_min, bar_width, label='Without dual buf', color=colors[1], edgecolor='black')
+    ax.bar(index, with_dual, bar_width, label='With dual buf', color=colors[0], edgecolor='black')
+    ax.bar(index+bar_width, without_dual, bar_width, label='Without dual buf', color=colors[1], edgecolor='black')
 
     ax.set_ylim(0, 275)
     ax.set_xticks(index + bar_width/2)
@@ -949,13 +949,13 @@ def draw_dual_buf():
     # set y ticks' fontsize
     ax.yaxis.set_tick_params(labelsize=BIG_SIZE)
 
-    # put the value on the top of the bar
-    for i in range(len(label)):
-        text = str(round(with_dual_min[i]))
-        ax.text(index[i], with_dual_min[i]+0.1, text, fontsize=BIG_SIZE-2, rotation=0, ha='center')
+    # # put the value on the top of the bar
+    # for i in range(len(label)):
+    #     text = str(round(with_dual_min[i]))
+    #     ax.text(index[i], with_dual_min[i]+0.1, text, fontsize=BIG_SIZE-2, rotation=0, ha='center')
 
-        text = str(round(without_dual_min[i]))
-        ax.text(index[i]+bar_width, without_dual_min[i]+0.1, text, fontsize=BIG_SIZE-2, rotation=0, ha='center')
+    #     text = str(round(without_dual_min[i]))
+    #     ax.text(index[i]+bar_width, without_dual_min[i]+0.1, text, fontsize=BIG_SIZE-2, rotation=0, ha='center')
 
     # add grid
     ax.grid(axis='y', linestyle='--', alpha=0.9)
@@ -963,7 +963,7 @@ def draw_dual_buf():
     # set the legend
     # ax.legend(bbox_to_anchor=(0.56, 1), loc='upper left', borderaxespad=0, ncol=3, frameon=True, edgecolor='black',
     #              handlelength=1, handletextpad=0.4, fontsize=BIG_SIZE)
-    ax.legend(loc='upper left', fontsize=BIG_SIZE-4, edgecolor='black', frameon=True, handlelength=1, handletextpad=0.4)
+    ax.legend(loc='upper right', fontsize=BIG_SIZE-4, edgecolor='black', frameon=True, handlelength=1, handletextpad=0.4)
     ax.set_ylabel('Execution Time (min)', fontsize=BIGGER_SIZE, fontweight='bold')
     ax.set_xlabel('Problems', fontsize=BIGGER_SIZE, fontweight='bold')
     # ax.set_title('Multi-threads Performance', fontsize=BIGGER_SIZE + 3, fontweight='bold')
@@ -971,7 +971,7 @@ def draw_dual_buf():
     # plt.suptitle('Random Write Micro Benchmark', fontsize=BIGGER_SIZE+3, fontweight='bold')
     plt.tight_layout()
     # plt.show()
-    plt.savefig('./figures/performance_breakdown.png')
+    plt.savefig('./figures/performance_breakdown1.pdf')
 
 
 def draw_class():
@@ -1048,9 +1048,9 @@ if __name__ == '__main__':
     # draw_is_perform()
     # draw_xs_perform()
 
-    draw_cg_multithreads()
+    # draw_cg_multithreads()
     # draw_cg_or_multithreads()
 
     # draw_class()
 
-    # draw_dual_buf()
+    draw_dual_buf()

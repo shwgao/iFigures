@@ -10,3 +10,4 @@ figures/
 *.svg
 *.webp
 log_files/
+.DS_Store
