@@ -7,10 +7,13 @@ figure_size = (20, 8)
 SMALL_SIZE = 8
 MEDIUM_SIZE = 10
 BIG_SIZE = 26
-BIGGER_SIZE = 30
+BIGGER_SIZE = 26
 
-# colors = ['#4793AF', '#FFC470', '#DD5746']
-colors = ['#B6BBC4', '#B31312']
+colors = ['#4793AF', '#FFC470', '#DD5746']
+# colors = ['#B6BBC4', '#B31312']
+# colors = ['#FFC470', '#DD5746']
+# colors = ['#DD5746', '#4793AF']
+
 
 
 
@@ -437,7 +440,8 @@ def draw_cg_perform():
 
     file_name = './figures/CG_performance.pdf'
 
-    y_tickles = [0, 20, 40, 60, 80, 100, 120, 140, 160, 180, 200, 220, 240, 260]
+    # y_tickles = [0, 20, 40, 60, 80, 100, 120, 140, 160, 180, 200, 220, 240, 260]
+    y_tickles = range(0, 280, 40)
     y_limits = [[0, 280], [0, 9.3]]
 
     draw_double_axis(bar_data, line_data, bar_label, line_label, title, xlabel, x_ticklabels, file_name, bar_color,
@@ -469,10 +473,10 @@ def draw_mg_perform():
     file_name = './figures/MG_performance.pdf'
 
     y_tickles = None
-    y_limits = [[0, 280], [0, 30]]
+    y_limits = [[0, 250], [0, 30]]
 
     draw_double_axis(bar_data, line_data, bar_label, line_label, title, xlabel, x_ticklabels, file_name, bar_color,
-                     line_color, bar_scale, line_scale, fig_size=(13, 8), font_size=BIGGER_SIZE, y_tickles=y_tickles,
+                     line_color, bar_scale, line_scale, fig_size=(13, 8), font_size=BIGGER_SIZE+3, y_tickles=y_tickles,
                      limits=y_limits, bar_text=bar_text)
 
 
@@ -592,7 +596,7 @@ def draw_mn_perform():
     file_name = './figures/MN_performance.pdf'
 
     y_tickles = None
-    y_limits = [[0, 83], [0, 39]]
+    y_limits = [[0, 84], [0, 39]]
 
     draw_double_axis(bar_data, line_data, bar_label, line_label, title, xlabel, x_ticklabels, file_name, bar_color,
                      line_color, bar_scale, line_scale, fig_size=(13, 8), font_size=BIGGER_SIZE, y_tickles=y_tickles,
@@ -673,22 +677,22 @@ def draw_double_axis(bar_data, line_data, bar_label, line_label, title, xlabel, 
     # 绘制柱状图
     bar_width = 0.3
     ax.bar(index, bar_data, bar_width, color=bar_color, edgecolor='black')
-    ax.set_ylabel(bar_label, fontsize=font_size+3, fontweight='bold') if bar_label else None
-    ax.set_xlabel(xlabel, fontsize=font_size, fontweight='bold')
-    ax.set_title(title, fontsize=font_size+3, fontweight='bold') if title else None
+    ax.set_ylabel(bar_label, fontsize=font_size) if bar_label else None
+    ax.set_xlabel(xlabel, fontsize=font_size)
+    ax.set_title(title, fontsize=font_size) if title else None
 
     # 绘制折线图
     ax2.plot(index, line_data, color=line_color, marker='o', markersize=15, label=line_label, linewidth=4)
-    ax2.set_ylabel(line_label, fontsize=font_size+3, fontweight='bold') if line_label else None
+    ax2.set_ylabel(line_label, fontsize=font_size) if line_label else None
 
     # 调整x轴刻度标签
     ax.set_xticks(index)
-    ax.set_xticklabels(x_ticklabels, fontsize=font_size, fontweight='bold')
+    ax.set_xticklabels(x_ticklabels, fontsize=font_size)
 
     # set y ticks' format
     ax.yaxis.set_major_formatter(ScalarFormatter())
-    ax.yaxis.set_tick_params(labelsize=BIG_SIZE)
-    ax2.yaxis.set_tick_params(labelsize=BIG_SIZE)
+    ax.yaxis.set_tick_params(labelsize=font_size)
+    ax2.yaxis.set_tick_params(labelsize=font_size)
 
     # set scale
     ax.set_yscale(bar_scale)
@@ -699,22 +703,23 @@ def draw_double_axis(bar_data, line_data, bar_label, line_label, title, xlabel, 
     ax2.set_ylim(limits[1][0], limits[1][1])
     if y_tickles:
         ax.set_yticks(y_tickles)
-    # ax.autoscale()
-    # ax2.autoscale()
+
+    # Add text below the last x-axis label
+    ax.text(index[-1], -0.1, "(=Oracle)", ha='center', va='top', fontsize=BIGGER_SIZE, transform=ax.get_xaxis_transform())
 
     # put the number near the line
     for i in range(len(line_data)):
-        ax2.text(index[i], line_data[i], round(line_data[i], 1), ha='center', va='bottom', fontsize=BIG_SIZE+3, color='g')
+        ax2.text(index[i]-0.1, line_data[i]-0.05, round(line_data[i], 1), ha='center', va='bottom', fontsize=font_size, color=line_color)
 
     if legend_bool:
         bar_proxy = plt.Rectangle((0, 0), 1, 1, fc=bar_color)
         line_proxy = plt.Line2D([0], [0], color=line_color, lw=2)
-        ax.legend(handles=[bar_proxy, line_proxy], labels=[bar_label, line_label], loc='upper right', fontsize=BIG_SIZE+3,
+        ax.legend(handles=[bar_proxy, line_proxy], labels=[bar_label, line_label], loc='upper right', fontsize=font_size,
                   dgecolor='black', frameon=True, handlelength=1, handletextpad=0.4, bbox_to_anchor=(0.8, 1.02))
     
     if bar_text:
         for i in range(len(bar_data)):
-            ax.text(index[i], bar_data[i], bar_text[i], ha='center', va='bottom', fontsize=BIG_SIZE+3, color='b')
+            ax.text(index[i], bar_data[i], bar_text[i], ha='center', va='bottom', fontsize=font_size, color='black')
 
     ax.grid(axis='y', linestyle='--', alpha=0.9, zorder=0)
 
@@ -925,15 +930,113 @@ def draw_cg_or_multithreads():
         plt.savefig(f'./figures/{app}_or_multithreads.pdf')
 
 
+def draw_multithreads_scalability():
+    label = ['1', '4', '8', '16', '24']
+    dual = [8706, 4675, 2671, 1125, 750]
+    oracles = [8706, 2099, 1111, 573, 396]
+    n_oracles = [x/60 for x in oracles]
+    n_dual = [x/60 for x in dual]
+    # colors = ['#B6BBC4', '#FFC470']
+    
+    apps = ['CG', 'MG', 'BT', 'FT', 'LU', 'IS']
+    datas = {'CG': {'Oracle': [8706, 2099, 1111, 573, 396], 'DOLMA': [8706, 4675, 2671, 1125, 750]},}
+    
+    x = [1, 4, 8, 16, 24]
+    
+    data = {
+        'CG': [
+            [8239, 2099.09, 1111.26, 573.2, 497],  # Oracle
+            [13396, 4089, 2199, 1071.0736, 690]  # DOLMA
+        ],
+        'MG': [
+            [709.91, 217.48, 123.81, 98.63, 90.91],  # Oracle
+            [34.962 * 50, 19.68 * 50, 10.53 * 50, 4.69 * 50, 3.36 * 50]  # DOLMA
+        ],
+        'FT': [
+            [176 * 25, 1446.86, 751.15, 416.34, 273.38],  # Oracle
+            [294 + 206.73 * 25, 91.18 + 53.84 * 25, 32.76 * 25 + 64.84, 19.35 * 25 + 41.79, 11.13 * 25 + 30.25]  # DOLMA
+        ],
+        'BT': [
+            [15000, 4122.32, 2219.74, 1135.52, 788.57],  # Oracle
+            [65.21 * 250, 20.22 * 250, 12.83 * 250, 9.69 * 250, 8.68 * 250]  # DOLMA
+        ],
+        'LU': [
+            [10728, 2933.75, 1654.08, 1011.88, 726.27],  # Oracle
+            [45.04 * 300, 15.32 * 300, 7.95 * 300, 5.326 * 300, 3.92 * 300]  # DOLMA
+        ],
+        'IS': [
+            [202.32, 92.53,	38.18,	20.42,	18.52],
+            [293.8149, 119,	68,	37,	34.7]
+        ]
+    }
+    
+    
+    for app in apps:
+        oracle = data[app][0]
+        dolma = data[app][1]
+        n_oracles = [x/60 for x in oracle]
+        n_dual = [x/60 for x in dolma]
+        
+        n_oracles_speedup = [n_oracles[0]/x for x in n_oracles]
+        n_dual_speedup = [n_dual[0]/x for x in n_dual]
+        
+        diagonal = x
+    
+        figsize=(11.5, 10) #if app == 'CG' or app == 'FT' else (10, 10)
+        fig, ax = plt.subplots(1, 1, figsize=figsize)
+        
+        linewidth = 8
+        ax.plot(x, diagonal, linewidth=linewidth, linestyle='--', color='gray')
+        ax.plot(x, n_oracles_speedup, marker='o', markersize=20, linestyle=':', color=colors[1], label='Oracle', linewidth=linewidth)
+        ax.plot(x, n_dual_speedup, marker='D', markersize=20, linestyle='-', color=colors[2], label='Axolotl', linewidth=linewidth)
+        
+        # set y ticks' fontsize
+        ax.yaxis.set_tick_params(labelsize=BIGGER_SIZE)
+        ax.xaxis.set_tick_params(labelsize=BIGGER_SIZE)
+
+        # # put the value on the top of the bar
+        # for i in range(len(label)):
+        #     text = str(round(n_oracles[i], 1))
+        #     ax.text(index[i], n_oracles[i]+0.01*ylim, text, fontsize=BIG_SIZE-2, rotation=0, ha='center')
+
+        #     text = str(round(n_dual[i], 1))
+        #     ax.text(index[i]+bar_width, n_dual[i]+0.01*ylim, text, fontsize=BIG_SIZE-2, rotation=0, ha='center')
+
+        # add grid
+        ax.grid(linestyle='--', alpha=0.9)
+        
+        # ax.set_xlim(0, 26)
+        # ax.set_ylim(0, 26)
+        ticks = range(0, 25, 5)
+        ax.set_xticks(ticks)
+        ax.set_xticklabels(ticks, ha='center', fontsize=BIGGER_SIZE)
+        ax.set_yticks(ticks)
+        ax.set_yticklabels(ticks, ha='right', fontsize=BIGGER_SIZE)
+
+        # set the legend
+
+        ax.legend(loc='upper left', fontsize=BIGGER_SIZE, edgecolor='black', frameon=True, handlelength=1, handletextpad=0.4) if app == 'CG' else None
+        ax.set_ylabel('Speedup', fontsize=BIGGER_SIZE) if app in ['CG', 'FT'] else None
+        
+
+        # 在最后一个 x 轴刻度下方添加 '#thread'
+        ax.text(x[-1]+0.5, 0, '#thread', fontsize=BIGGER_SIZE, ha='center', va='top', transform=ax.get_xaxis_transform())
+
+        plt.tight_layout()
+        # plt.show()
+        plt.savefig(f'./figures/{app}_multithreads_scalability_square.pdf')
+
+
+
 def draw_dual_buf():
     label = ['CG', 'MG', 'BT', 'FT', 'LU', 'IS']
     with_dual = [138, 20, 262, 91, 154, 5]
     without_dual = [223, 29, 272, 102, 161, 5]
     # with_dual_min = [x/60 for x in with_dual]
     # without_dual_min = [x/60 for x in without_dual]
-    colors = ['#B6BBC4', '#FFC470']
+    # colors = ['#B6BBC4', '#FFC470']
 
-    fig, ax = plt.subplots(1, 1, figsize=(10, 6))
+    fig, ax = plt.subplots(1, 1, figsize=(10, 5))
     bar_width = 0.3
 
     index = np.arange(len(label))*0.8
@@ -944,10 +1047,10 @@ def draw_dual_buf():
 
     ax.set_ylim(0, 275)
     ax.set_xticks(index + bar_width/2)
-    ax.set_xticklabels(label, ha='center', fontsize=BIG_SIZE-4, fontweight='bold')  # rotation=45,
+    ax.set_xticklabels(label, ha='center', fontsize=BIGGER_SIZE)  # rotation=45,
 
     # set y ticks' fontsize
-    ax.yaxis.set_tick_params(labelsize=BIG_SIZE)
+    ax.yaxis.set_tick_params(labelsize=BIGGER_SIZE)
 
     # # put the value on the top of the bar
     # for i in range(len(label)):
@@ -963,9 +1066,9 @@ def draw_dual_buf():
     # set the legend
     # ax.legend(bbox_to_anchor=(0.56, 1), loc='upper left', borderaxespad=0, ncol=3, frameon=True, edgecolor='black',
     #              handlelength=1, handletextpad=0.4, fontsize=BIG_SIZE)
-    ax.legend(loc='upper right', fontsize=BIG_SIZE-4, edgecolor='black', frameon=True, handlelength=1, handletextpad=0.4)
-    ax.set_ylabel('Execution Time (min)', fontsize=BIGGER_SIZE, fontweight='bold')
-    ax.set_xlabel('Problems', fontsize=BIGGER_SIZE, fontweight='bold')
+    ax.legend(loc='upper right', fontsize=BIGGER_SIZE-6, edgecolor='black', frameon=True, handlelength=1, handletextpad=0.4)
+    ax.set_ylabel('Execution Time (min)', fontsize=BIGGER_SIZE)
+    # ax.set_xlabel('Problems', fontsize=BIGGER_SIZE)
     # ax.set_title('Multi-threads Performance', fontsize=BIGGER_SIZE + 3, fontweight='bold')
     # ax.set_xlabel('Block Size', fontsize=BIGGER_SIZE, fontweight='bold')
     # plt.suptitle('Random Write Micro Benchmark', fontsize=BIGGER_SIZE+3, fontweight='bold')
@@ -1029,6 +1132,73 @@ def draw_class():
     plt.tight_layout()
     plt.savefig('./figures/class.pdf')
     plt.show()
+    
+
+def draw_breakdown():
+    # --- 数据 ---
+    # 从你提供的文本中提取的数据
+    sizes = ['S', 'W', 'A', 'B', 'C', 'D']
+    oracle_data = [15642.5, 29504.61, 40046.48, 43988.19, 31709.4, 34271.33]
+    axolotl_data = [87.36, 635.51, 4370.74, 13283.59, 17932.78, 33026.62]
+    sync_data = [77.39, 556.03, 3895.23, 12215.57, 16341.67, 32373.83]
+
+    # --- 绘图 ---
+
+    # 设置 x 轴的位置
+    x = np.arange(len(sizes))  # size 分类的标签位置 [0, 1, 2, 3, 4, 5]
+    width = 0.25  # 柱子的宽度
+
+    fig, ax = plt.subplots(figsize=(10, 6)) # 创建图形和坐标轴，可以调整 figsize 来改变大小
+
+    # 绘制每个数据集的柱子
+    rects1 = ax.bar(x - width, oracle_data, width, label='Oracle', color=colors[0]) # 向左偏移
+    rects2 = ax.bar(x, axolotl_data, width, label='Axolotl', color=colors[1]) # 居中 (注意：颜色和标签根据你的文本数据调整)
+    rects3 = ax.bar(x + width, sync_data, width, label='Sync', color=colors[2]) # 向右偏移
+
+    # --- 自定义图表 ---
+
+    # 添加标签、标题和自定义 x 轴刻度标签等
+    ax.set_ylabel('Throughput(Mop/s)', fontsize=BIGGER_SIZE)
+    # ax.set_title('Data Comparison by Size') # 图表标题
+    ax.set_xticks(x)                  # 设置 x 轴刻度的位置
+    ax.set_xticklabels(['Size ' + s for s in sizes], fontsize=BIG_SIZE) # 设置 x 轴刻度的标签
+    # ax.legend(loc='upper left', fontsize=BIGGER_SIZE, edgecolor='black', frameon=True, handlelength=1, handletextpad=0.4)
+    # legend 在图的顶部，排列为一行三列
+    ax.legend(loc='upper left', fontsize=BIGGER_SIZE-3, edgecolor='black', frameon=True, 
+              handlelength=1, handletextpad=0.4, ncol=3, bbox_to_anchor=(0, 1.01))
+    ax.yaxis.set_tick_params(labelsize=BIGGER_SIZE)
+    # ax.xaxis.set_tick_params(labelsize=BIGGER_SIZE)
+
+    # 将 Y 轴设置为对数刻度 (像你的图片一样)
+    ax.set_yscale('log')
+    ax.set_ylim(10, 200000)
+
+    # 可选：为柱子添加数值标签
+    def autolabel(rects):
+        """在每个柱子上方附加一个文本标签，显示其高度。"""
+        for rect in rects:
+            height = rect.get_height()
+            # 对数值进行格式化，避免过长的小数
+            label_text = f'{height:.2f}' if height < 1000 else f'{height/1000:.1f}k'
+            ax.annotate(label_text,
+                        xy=(rect.get_x() + rect.get_width() / 2, height),
+                        xytext=(0, 3),  # 垂直偏移 3 points
+                        textcoords="offset points",
+                        ha='center', va='bottom', fontsize=8, rotation=45) # 调小字号并旋转
+
+    # 如果需要，可以取消下面三行的注释来显示数值标签
+    # autolabel(rects1)
+    # autolabel(rects2)
+    # autolabel(rects3)
+    
+    ax.grid(axis='y', linestyle='--', alpha=0.9, zorder=0)
+
+    fig.tight_layout() # 调整布局防止标签重叠
+
+    # --- 显示图表 ---
+    plt.savefig('./figures/scale.pdf')
+    plt.show()
+
 
 
 if __name__ == '__main__':
@@ -1047,10 +1217,14 @@ if __name__ == '__main__':
     # draw_mn_perform()
     # draw_is_perform()
     # draw_xs_perform()
+    
+    # draw_multithreads_scalability()
 
     # draw_cg_multithreads()
     # draw_cg_or_multithreads()
 
     # draw_class()
 
-    draw_dual_buf()
+    # draw_dual_buf()
+
+    draw_breakdown()
