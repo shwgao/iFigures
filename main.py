@@ -7,7 +7,7 @@ figure_size = (20, 8)
 SMALL_SIZE = 8
 MEDIUM_SIZE = 10
 BIG_SIZE = 26
-BIGGER_SIZE = 26
+BIGGER_SIZE = 24
 
 colors = ['#4793AF', '#FFC470', '#DD5746']
 # colors = ['#B6BBC4', '#B31312']
@@ -129,7 +129,7 @@ def draw_random_write(file='./log_files/motivation.txt'):
     # set the legend
     axlog.legend(bbox_to_anchor=(0.56, 1), loc='upper left', borderaxespad=0, ncol=3, frameon=True, edgecolor='black',
                  handlelength=1, handletextpad=0.4, fontsize=BIG_SIZE)
-    ax.set_ylabel('Normalized Performance', fontsize=BIGGER_SIZE, fontweight='bold', labelpad=20)
+    ax.set_ylabel('Normalized Latency', fontsize=BIGGER_SIZE, fontweight='bold', labelpad=20)
     ax.yaxis.set_label_coords(-0.04, 0.65)
     ax.set_xlabel('Block Size', fontsize=BIGGER_SIZE, fontweight='bold')
     ax.set_title('Normalized Random Write Time', fontsize=BIGGER_SIZE, fontweight='bold')
@@ -137,7 +137,7 @@ def draw_random_write(file='./log_files/motivation.txt'):
     plt.suptitle('Random Write Micro Benchmark', fontsize=BIGGER_SIZE+3, fontweight='bold')
     plt.tight_layout()
     # plt.show()
-    plt.savefig('./figures/random_write.pdf')
+    plt.savefig('./figures/random_write_new.pdf')
 
 
 def draw_random_read(file='./log_files/motivation.txt'):
@@ -221,7 +221,7 @@ def draw_random_read(file='./log_files/motivation.txt'):
     # set the legend
     axlog.legend(bbox_to_anchor=(0.56, 1), loc='upper left', borderaxespad=0, ncol=3, frameon=True, edgecolor='black',
                  handlelength=1, handletextpad=0.4, fontsize=BIG_SIZE)
-    ax.set_ylabel('Normalized Performance', fontsize=BIGGER_SIZE, fontweight='bold', labelpad=20)
+    ax.set_ylabel('Normalized Latency', fontsize=BIGGER_SIZE, fontweight='bold', labelpad=20)
     ax.yaxis.set_label_coords(-0.05, 0.65)
     ax.set_xlabel('Block Size', fontsize=BIGGER_SIZE, fontweight='bold')
     ax.set_title('Normalized Random Read Time', fontsize=BIGGER_SIZE, fontweight='bold')
@@ -229,7 +229,7 @@ def draw_random_read(file='./log_files/motivation.txt'):
     plt.suptitle('Random Read Micro Benchmark', fontsize=BIGGER_SIZE+3, fontweight='bold')
     plt.tight_layout()
     # plt.show()
-    plt.savefig('./figures/random_read.pdf')
+    plt.savefig('./figures/random_read_new.pdf')
 
 
 def draw_seq_read(file='./log_files/motivation.txt'):
@@ -313,7 +313,7 @@ def draw_seq_read(file='./log_files/motivation.txt'):
     # set the legend
     axlog.legend(bbox_to_anchor=(0.56, 1), loc='upper left', borderaxespad=0, ncol=3, frameon=True, edgecolor='black',
                  handlelength=1, handletextpad=0.4, fontsize=BIG_SIZE)
-    ax.set_ylabel('Normalized Performance', fontsize=BIGGER_SIZE, fontweight='bold', labelpad=20)
+    ax.set_ylabel('Normalized Latency', fontsize=BIGGER_SIZE, fontweight='bold', labelpad=20)
     ax.yaxis.set_label_coords(-0.05, 0.65)
     ax.set_xlabel('Block Size', fontsize=BIGGER_SIZE, fontweight='bold')
     ax.set_title('Normalized Sequential Read Time', fontsize=BIGGER_SIZE, fontweight='bold')
@@ -321,7 +321,7 @@ def draw_seq_read(file='./log_files/motivation.txt'):
     plt.suptitle('Sequential Read Micro Benchmark', fontsize=BIGGER_SIZE+3, fontweight='bold')
     plt.tight_layout()
     # plt.show()
-    plt.savefig('./figures/sequential_read.pdf')
+    plt.savefig('./figures/sequential_read_new.pdf')
 
 
 def draw_seq_write(file='./log_files/motivation.txt'):
@@ -405,7 +405,7 @@ def draw_seq_write(file='./log_files/motivation.txt'):
     # set the legend
     axlog.legend(bbox_to_anchor=(0.56, 1), loc='upper left', borderaxespad=0, ncol=3, frameon=True, edgecolor='black',
                  handlelength=1, handletextpad=0.4, fontsize=BIG_SIZE)
-    ax.set_ylabel('Normalized Performance', fontsize=BIGGER_SIZE, fontweight='bold', labelpad=20)
+    ax.set_ylabel('Normalized Latency', fontsize=BIGGER_SIZE, fontweight='bold', labelpad=20)
     ax.yaxis.set_label_coords(-0.05, 0.65)
     ax.set_xlabel('Block Size', fontsize=BIGGER_SIZE, fontweight='bold')
     ax.set_title('Normalized Sequential Write Time', fontsize=BIGGER_SIZE, fontweight='bold')
@@ -413,7 +413,7 @@ def draw_seq_write(file='./log_files/motivation.txt'):
     plt.suptitle('Sequential Write Micro Benchmark', fontsize=BIGGER_SIZE+3, fontweight='bold')
     plt.tight_layout()
     # plt.show()
-    plt.savefig('./figures/sequential_write.pdf')
+    plt.savefig('./figures/sequential_write_new.pdf')
 
 
 def draw_cg_perform():
@@ -730,6 +730,26 @@ def draw_double_axis(bar_data, line_data, bar_label, line_label, title, xlabel, 
     # plt.close()
     plt.show()
 
+
+def draw_N():
+    labels = ['0', '1', '2', '3', '4', '5']
+    # data = [93.53, 84.37, 84.37, 84.37, 84.37, 88.56]
+    data = [93527614240, 84374829944, 84374829944, 84374829944, 84374829944, 88857437048]
+    data = [x / 1024 / 1024 / 1024 for x in data]
+    
+    fig, ax = plt.subplots(1, 1, figsize=(8, 5))
+    ax.plot(labels, data, color=colors[1], marker='o', markersize=15, label='DOLMA', linewidth=4)
+    ax.set_ylabel('Peak Memory Usage(GB)', fontsize=BIGGER_SIZE)
+    ax.yaxis.set_tick_params(labelsize=BIGGER_SIZE)
+    ax.xaxis.set_tick_params(labelsize=BIGGER_SIZE)
+
+    ax.set_xlabel('Iterations', fontsize=BIGGER_SIZE)
+    ax.set_ylim(0, 100)
+    ax.grid(axis='y', linestyle='--', alpha=0.9, zorder=0)
+    
+    plt.tight_layout()
+    # plt.show()
+    plt.savefig('./figures/N.pdf')
 
 def draw_NP_1():
     labels = ['Init', '1', '2', '3', '4', '5']
@@ -1202,10 +1222,10 @@ def draw_breakdown():
 
 
 if __name__ == '__main__':
-    # draw_random_write()
-    # draw_random_read()
-    # draw_seq_read()
-    # draw_seq_write()
+    draw_random_write()
+    draw_random_read()
+    draw_seq_read()
+    draw_seq_write()
 
     # draw_NP_1()
 
@@ -1227,4 +1247,6 @@ if __name__ == '__main__':
 
     # draw_dual_buf()
 
-    draw_breakdown()
+    # draw_breakdown()
+
+    draw_N()
